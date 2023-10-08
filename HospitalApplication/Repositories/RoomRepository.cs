@@ -19,7 +19,11 @@ namespace HospitalApplication.Repositories
 
 		public int deleteRoom(int roomId)
 		{
-			Room roomToDeleteFounded = hospitalDb.Rooms.Where(x => x.Id == roomId).Single();
+			Room roomToDeleteFounded = hospitalDb.Rooms.Where(x => x.Id == roomId).SingleOrDefault() ?? new Room();
+
+			if (roomToDeleteFounded.Id == 0)
+				return 0;
+
 			hospitalDb.Rooms.Remove(roomToDeleteFounded);
 			hospitalDb.SaveChanges();
 			return roomId;
@@ -27,7 +31,7 @@ namespace HospitalApplication.Repositories
 
 		public RoomDTO getRoom(int roomId)
 		{
-			Room roomFounded = hospitalDb.Rooms.Where(x => x.Id == roomId).Single();
+			Room roomFounded = hospitalDb.Rooms.Where(x => x.Id == roomId).SingleOrDefault() ?? new Room();
 			return DTOFromDAO(roomFounded);
 		}
 

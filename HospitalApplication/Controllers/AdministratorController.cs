@@ -21,10 +21,13 @@ namespace HospitalApplication.Controllers
 		[HttpGet("{id}")]
 		public ActionResult getAdminitrastor(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with id zero", response = id });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor obtained successfully", response = administratorService.findPersonById(id) });
+			PersonDTO administratorFound = administratorService.findPersonById(id);
+
+			if (administratorFound.Id == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Administrator was not found", response = administratorFound });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Administrator obtained successfully", response = administratorFound  });
 		}
 
 		[HttpPost]
@@ -33,7 +36,7 @@ namespace HospitalApplication.Controllers
 			if (administratorObject.Id != 0)
 				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id is different from zero", response = administratorObject });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor created successfully", response = administratorService.createPerson(administratorObject) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Administrator created successfully", response = administratorService.createPerson(administratorObject) });
 		}
 
 		[HttpPut]
@@ -42,16 +45,18 @@ namespace HospitalApplication.Controllers
 			if (administratorObject.Id == 0)
 				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = administratorObject });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor updated successfully", response = administratorService.updatePerson(administratorObject) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Administrator updated successfully", response = administratorService.updatePerson(administratorObject) });
 		}
 
 		[HttpDelete("{id}")]
 		public ActionResult deleteAdministrator(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = id });
+			int idAdministratorFound = administratorService.deletePerson(id);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor updated successfully", response = administratorService.deletePerson(id) });
+			if (idAdministratorFound == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Id must be different from zero", response = idAdministratorFound });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Administrator deleted successfully", response = idAdministratorFound  });
 		}
 	}
 }

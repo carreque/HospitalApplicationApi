@@ -19,7 +19,11 @@ namespace HospitalApplication.Repositories
 
 		public int deleteFloor(int floorId)
 		{
-			Floor floorFounded = hospitalDb.Floors.Where(x => x.Id == floorId).Single();
+			Floor floorFounded = hospitalDb.Floors.Where(x => x.Id == floorId).SingleOrDefault() ?? new Floor();
+
+			if (floorFounded.Id == 0)
+				return 0;
+
 			hospitalDb.Floors.Remove(floorFounded);
 			hospitalDb.SaveChanges();
 			return floorId;
@@ -27,14 +31,15 @@ namespace HospitalApplication.Repositories
 
 		public FloorDTO getFloor(int floorId)
 		{
-			Floor floorFounded = hospitalDb.Floors.Where(x => x.Id == floorId).Single();
-			return DTOObjectFromDAOOBject(floorFounded);
+			Floor floorFounded = hospitalDb.Floors.Where(x => x.Id == floorId).SingleOrDefault() ?? new Floor();
+			return  DTOObjectFromDAOOBject(floorFounded);
 		}
 
 		public FloorDTO updateFloor(FloorDTO floor)
 		{
 			Floor floorToUpdate = DAOObjectFromDTO(floor);
 			hospitalDb.Floors.Update(floorToUpdate);
+			hospitalDb.SaveChanges();
 			return floor;
 		}
 

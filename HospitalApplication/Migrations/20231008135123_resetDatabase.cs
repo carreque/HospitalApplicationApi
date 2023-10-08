@@ -10,6 +10,20 @@ namespace HospitalApplication.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Cars",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    type = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    carPaymentValue = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cars", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Floors",
                 columns: table => new
                 {
@@ -24,18 +38,19 @@ namespace HospitalApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Parking",
+                name: "ParkingEntries",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     carId = table.Column<int>(type: "int", nullable: false),
                     from = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    to = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    to = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    licensePlate = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Parking", x => x.Id);
+                    table.PrimaryKey("PK_ParkingEntries", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,7 +68,7 @@ namespace HospitalApplication.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Workers",
+                name: "WorkersFloorsRelateds",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -65,7 +80,7 @@ namespace HospitalApplication.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Workers", x => x.Id);
+                    table.PrimaryKey("PK_WorkersFloorsRelateds", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,6 +95,7 @@ namespace HospitalApplication.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     hasCar = table.Column<bool>(type: "bit", nullable: false),
+                    parkingSlot = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     admin_accreditation = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     doctor_accreditation = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -100,25 +116,6 @@ namespace HospitalApplication.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "Cars",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    licensePlate = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    type = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cars", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Cars_People_Id",
-                        column: x => x.Id,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_People_idRoomId",
                 table: "People",
@@ -134,13 +131,13 @@ namespace HospitalApplication.Migrations
                 name: "Floors");
 
             migrationBuilder.DropTable(
-                name: "Parking");
-
-            migrationBuilder.DropTable(
-                name: "Workers");
+                name: "ParkingEntries");
 
             migrationBuilder.DropTable(
                 name: "People");
+
+            migrationBuilder.DropTable(
+                name: "WorkersFloorsRelateds");
 
             migrationBuilder.DropTable(
                 name: "Rooms");

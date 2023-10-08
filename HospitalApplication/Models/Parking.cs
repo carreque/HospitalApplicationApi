@@ -15,5 +15,9 @@ namespace HospitalApplication.Models
 		public DateTime from { get; set; }
 
 		public DateTime to { get; set; }
+
+		public string licensePlate { get; set; }
+
+		public int idPerson { get; set; }
 	}
 }

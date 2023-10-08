@@ -19,10 +19,11 @@ namespace HospitalApplication.Controllers
 		[HttpGet("{id}")]
 		public ActionResult getRoom(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with id zero", response = id });
+			RoomDTO roomFounded = roomService.getRoom(id);
+			if (roomFounded.Id == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "There is no object with id zero", response = roomFounded });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Room obtained successfully", response = roomService.getRoom(id) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Room obtained successfully", response = roomFounded });
 		}
 
 		[HttpPost]
@@ -46,10 +47,12 @@ namespace HospitalApplication.Controllers
 		[HttpDelete("{id}")]
 		public ActionResult deleteRoom(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = id });
+			int idRoomDeleted = roomService.deleteRoom(id);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Room updated successfully", response = roomService.deleteRoom(id) });
+			if (idRoomDeleted == 0)
+				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Room was not found", response = idRoomDeleted });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Room deleted successfully", response = idRoomDeleted });
 		}
 	}
 }

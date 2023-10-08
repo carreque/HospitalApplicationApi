@@ -64,7 +64,7 @@ namespace HospitalApplication.Repositories
 			newDoctor.Id = person.Id;
 			newDoctor.Name = person.Name;
 			newDoctor.hasCar = person.hascar;
-			newDoctor.car = person.car;
+			newDoctor.parkingSlot = person.parkingSlot;
 			newDoctor.Email = person.Email;
 			newDoctor.Phone = person.Phone;
 			newDoctor.Lastnames = person.Lastnames;
@@ -80,7 +80,7 @@ namespace HospitalApplication.Repositories
 			newPatient.Id = person.Id;
 			newPatient.Name = person.Name;
 			newPatient.hasCar = person.hascar;
-			newPatient.car = person.car;
+			newPatient.parkingSlot = person.parkingSlot;
 			newPatient.Email = person.Email;
 			newPatient.Phone = person.Phone;
 			newPatient.Lastnames = person.Lastnames;
@@ -98,7 +98,7 @@ namespace HospitalApplication.Repositories
 			administrator.Id = person.Id;
 			administrator.Name = person.Name;
 			administrator.hasCar = person.hascar;
-			administrator.car = person.car;
+			administrator.parkingSlot = person.parkingSlot;
 			administrator.Email = person.Email;
 			administrator.Phone = person.Phone;
 			administrator.Lastnames = person.Lastnames;
@@ -114,7 +114,7 @@ namespace HospitalApplication.Repositories
 			nurse.Id = person.Id;
 			nurse.Name = person.Name;
 			nurse.hasCar = person.hascar;
-			nurse.car = person.car;
+			nurse.parkingSlot = person.parkingSlot;
 			nurse.Email = person.Email;
 			nurse.Phone = person.Phone;
 			nurse.Lastnames = person.Lastnames;

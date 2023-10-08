@@ -28,9 +28,10 @@ namespace HospitalApplication.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("licensePlate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("carPaymentValue")
+                        .HasColumnType("int");
 
                     b.Property<string>("type")
                         .IsRequired()
@@ -75,12 +76,19 @@ namespace HospitalApplication.Migrations
                     b.Property<DateTime>("from")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("idPerson")
+                        .HasColumnType("int");
+
+                    b.Property<string>("licensePlate")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("to")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Parking");
+                    b.ToTable("ParkingEntries");
                 });
 
             modelBuilder.Entity("HospitalApplication.Models.Person", b =>
@@ -117,6 +125,9 @@ namespace HospitalApplication.Migrations
 
                     b.Property<bool>("hasCar")
                         .HasColumnType("bit");
+
+                    b.Property<int>("parkingSlot")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -166,7 +177,7 @@ namespace HospitalApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Workers");
+                    b.ToTable("WorkersFloorsRelateds");
                 });
 
             modelBuilder.Entity("HospitalApplication.Models.Administrator", b =>
@@ -224,17 +235,6 @@ namespace HospitalApplication.Migrations
                     b.HasDiscriminator().HasValue("Patient");
                 });
 
-            modelBuilder.Entity("HospitalApplication.Models.Car", b =>
-                {
-                    b.HasOne("HospitalApplication.Models.Person", "driver")
-                        .WithOne("car")
-                        .HasForeignKey("HospitalApplication.Models.Car", "Id")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("driver");
-                });
-
             modelBuilder.Entity("HospitalApplication.Models.Patient", b =>
                 {
                     b.HasOne("HospitalApplication.Models.Room", "idRoom")
@@ -244,12 +244,6 @@ namespace HospitalApplication.Migrations
                         .IsRequired();
 
                     b.Navigation("idRoom");
-                });
-
-            modelBuilder.Entity("HospitalApplication.Models.Person", b =>
-                {
-                    b.Navigation("car")
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

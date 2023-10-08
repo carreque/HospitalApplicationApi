@@ -13,29 +13,33 @@ namespace HospitalApplication.Repositories
 		public WorkerFloorRelatedDTO createWorkerFloorRelation(WorkerFloorRelatedDTO workersFloorsRelation)
 		{
 			WorkersFloorsRelated workerToInsert = DAOFromDTO(workersFloorsRelation);
-			hospitalDb.Workers.Add(workerToInsert);
+			hospitalDb.WorkersFloorsRelateds.Add(workerToInsert);
 			hospitalDb.SaveChanges();
 			return workersFloorsRelation;
 		}
 
 		public int deleteWorkerFloorRelation(int workersFloorsRelationId)
 		{
-			WorkersFloorsRelated workerRelationFounded = hospitalDb.Workers.Where(x => x.Id == workersFloorsRelationId).Single();
-			hospitalDb.Workers.Remove(workerRelationFounded);
+			WorkersFloorsRelated workerRelationFounded = hospitalDb.WorkersFloorsRelateds.Where(x => x.Id == workersFloorsRelationId).SingleOrDefault() ?? new WorkersFloorsRelated();
+
+			if (workerRelationFounded.Id == 0)
+				return 0;
+
+			hospitalDb.WorkersFloorsRelateds.Remove(workerRelationFounded);
 			hospitalDb.SaveChanges();
 			return workersFloorsRelationId;
 		}
 
 		public WorkerFloorRelatedDTO getWorkerFloorRelation(int id)
 		{
-			WorkersFloorsRelated workerRelationFounded = hospitalDb.Workers.Where(x => x.Id == id).Single();
+			WorkersFloorsRelated workerRelationFounded = hospitalDb.WorkersFloorsRelateds.Where(x => x.Id == id).SingleOrDefault() ?? new WorkersFloorsRelated();
 			return DTOFromDAO(workerRelationFounded);
 		}
 
 		public WorkerFloorRelatedDTO upadteWorkerFloorRelation(WorkerFloorRelatedDTO workerFloorsRelation)
 		{
 			WorkersFloorsRelated workersRelatiToUpdate = DAOFromDTO(workerFloorsRelation);
-			hospitalDb.Workers.Update(workersRelatiToUpdate);
+			hospitalDb.WorkersFloorsRelateds.Update(workersRelatiToUpdate);
 			hospitalDb.SaveChanges();
 			return workerFloorsRelation;
 		}

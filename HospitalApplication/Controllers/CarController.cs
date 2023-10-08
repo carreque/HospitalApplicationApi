@@ -23,10 +23,11 @@ namespace HospitalApplication.Controllers
 		[HttpGet("{id}")]
 		public ActionResult getCar(int carId)
 		{
-			if (carId == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with ID Zero", response = carId });
+			CarDTO carFounded = carService.getCar(carId);
+			if (carFounded.Id == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Car was not found", response = carFounded });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Car obtained successfully", response = carService.getCar(carId) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Car obtained successfully", response = carFounded  });
 		}
 
 		[HttpPost]
@@ -50,10 +51,13 @@ namespace HospitalApplication.Controllers
 		[HttpDelete("{id}")]
 		public ActionResult deleteCar(int id)
 		{
-			if(id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with ID Zero", response = id });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Car deleted successfully", response = carService.deleteCar(id) });
+			int deletedCar = carService.deleteCar(id);
+
+			if (deletedCar == 0)
+				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Car was not found", response = deletedCar });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Car deleted successfully", response = deletedCar });
 		}
 	}
 }

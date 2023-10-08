@@ -21,10 +21,13 @@ namespace HospitalApplication.Controllers
 		[HttpGet("{id}")]
 		public ActionResult getPatient(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with id zero", response = id });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor obtained successfully", response = patientService.findPersonById(id) });
+			PersonDTO patientFounded = patientService.findPersonById(id);
+
+			if (patientFounded.Id == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Patient was not founded", response = patientFounded });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Patient obtained successfully", response = patientFounded });
 		}
 
 		[HttpPost]
@@ -33,7 +36,7 @@ namespace HospitalApplication.Controllers
 			if (patientObject.Id != 0)
 				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id is different from zero", response = patientObject });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor created successfully", response = patientService.createPerson(patientObject) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Patient created successfully", response = patientService.createPerson(patientObject) });
 		}
 
 		[HttpPut]
@@ -42,16 +45,19 @@ namespace HospitalApplication.Controllers
 			if (patientObject.Id == 0)
 				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = patientObject });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor updated successfully", response = patientService.updatePerson(patientObject) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Patient updated successfully", response = patientService.updatePerson(patientObject) });
 		}
 
 		[HttpDelete("{id}")]
 		public ActionResult deletePatient(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = id });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Doctor updated successfully", response = patientService.deletePerson(id) });
+			int idPatientDeleted = patientService.deletePerson(id);
+
+			if (idPatientDeleted == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Patient was not found", response = idPatientDeleted });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Patient deleted successfully", response = idPatientDeleted });
 		}
 	}
 }

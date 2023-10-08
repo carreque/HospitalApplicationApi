@@ -21,10 +21,12 @@ namespace HospitalApplication.Controllers
 		[HttpGet("{id}")]
 		public ActionResult getParking(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with id zero", response = id });
+			ParkingDTO parkingFounded = parkingService.getParkingSlotById(id);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Parking obtained successfully", response = parkingService.getParkingSlotById(id) });
+			if(parkingFounded.Id == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Parking was not found", response = parkingFounded });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Parking obtained successfully", response = parkingFounded  });
 		}
 
 		[HttpPost]
@@ -48,10 +50,12 @@ namespace HospitalApplication.Controllers
 		[HttpDelete("{id}")]
 		public ActionResult deleteParking(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = id });
+			int idDeleted = parkingService.deleteParkingSlot(id);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Parking updated successfully", response = parkingService.deleteParkingSlot(id) });
+			if (idDeleted == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Parking was not found", response = idDeleted });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Parking updated successfully", response =  idDeleted });
 		}
 	}
 }

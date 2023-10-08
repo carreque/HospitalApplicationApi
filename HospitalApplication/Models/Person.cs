@@ -16,7 +16,7 @@ namespace HospitalApplication.Models
 		public string Email { get; set; }
 		public string Phone { get; set; }
 		public bool hasCar { get; set; }
-		public Car car { get; set; }
+		public int parkingSlot { get; set; }
 
 	}
 }

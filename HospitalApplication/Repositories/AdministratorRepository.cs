@@ -21,7 +21,11 @@ namespace HospitalApplication.Repositories
 
 		public int deletePerson(int personId)
 		{
-			Administrator administratorFoundedToRemove = hospitalDb.Administrators.Where(x => x.Id == personId).Single();
+			Administrator administratorFoundedToRemove = hospitalDb.Administrators.Where(x => x.Id == personId).SingleOrDefault() ?? new Administrator();
+
+			if (administratorFoundedToRemove.Id == 0)
+				return 0;
+
 			hospitalDb.Administrators.Remove(administratorFoundedToRemove);
 			hospitalDb.SaveChanges();
 			return personId;
@@ -40,13 +44,13 @@ namespace HospitalApplication.Repositories
 
 		public PersonDTO findPersonById(int id)
 		{
-			Administrator administratorFounded = hospitalDb.Administrators.Where(x => x.Id == id).Single();
+			Administrator administratorFounded = hospitalDb.Administrators.Where(x => x.Id == id).SingleOrDefault() ?? new Administrator();
 			return DTOFromDAO(administratorFounded);
 		}
 
 		public PersonDTO getAdministratorByAccreditation(string accreditationId)
 		{
-			Administrator administratorFounded = hospitalDb.Administrators.Where(x => x.admin_accreditation == accreditationId).Single();
+			Administrator administratorFounded = hospitalDb.Administrators.Where(x => x.admin_accreditation == accreditationId).SingleOrDefault() ?? new Administrator();
 			return DTOFromDAO(administratorFounded);
 		}
 
@@ -64,7 +68,7 @@ namespace HospitalApplication.Repositories
 			administrator.Id = person.Id;
 			administrator.Name = person.Name;
 			administrator.hasCar = person.hascar;
-			administrator.car = person.car;
+			administrator.parkingSlot = person.parkingSlot;
 			administrator.Email = person.Email;
 			administrator.Phone = person.Phone;
 			administrator.Lastnames = person.Lastnames;
@@ -80,7 +84,7 @@ namespace HospitalApplication.Repositories
 			newPersonDTO.Id = administrator.Id;
 			newPersonDTO.Name = administrator.Name;
 			newPersonDTO.hascar = administrator.hasCar;
-			newPersonDTO.car = administrator.car;
+			newPersonDTO.parkingSlot = administrator.parkingSlot;
 			newPersonDTO.Email = administrator.Email;
 			newPersonDTO.Phone = administrator.Phone;
 			newPersonDTO.Lastnames = administrator.Lastnames;

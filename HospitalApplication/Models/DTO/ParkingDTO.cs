@@ -13,5 +13,8 @@ namespace HospitalApplication.Models.DTO
 		public DateTime from { get; set; }
 
 		public DateTime to { get; set; }
+
+		public string licensePlate { get; set; }
+
 	}
 }

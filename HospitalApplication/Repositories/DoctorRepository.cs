@@ -20,7 +20,11 @@ namespace HospitalApplication.Repositories
 
 		public int deletePerson(int personId)
 		{
-			Doctor doctorFounded = hospitalDb.Doctors.Where(x => x.Id == personId).Single();
+			Doctor doctorFounded = hospitalDb.Doctors.Where(x => x.Id == personId).SingleOrDefault() ?? new Doctor();
+
+			if (doctorFounded.Id == 0)
+				return 0;
+
 			hospitalDb.Remove(doctorFounded);
 			hospitalDb.SaveChanges();
 			return personId;
@@ -39,13 +43,13 @@ namespace HospitalApplication.Repositories
 
 		public PersonDTO findPersonById(int id)
 		{
-			Doctor doctorFounded = hospitalDb.Doctors.Where(x => x.Id ==  id).Single();
+			Doctor doctorFounded = hospitalDb.Doctors.Where(x => x.Id ==  id).SingleOrDefault() ?? new Doctor();
 			return DTOFromDAO(doctorFounded);
 		}
 
 		public PersonDTO getDoctoryByAccreditation(string accreditation)
 		{
-			Doctor doctorFounded = hospitalDb.Doctors.Where( x => x.doctor_accreditation == accreditation ).Single();
+			Doctor doctorFounded = hospitalDb.Doctors.Where( x => x.doctor_accreditation == accreditation ).SingleOrDefault() ?? new Doctor();
 			return DTOFromDAO(doctorFounded);
 		}
 
@@ -63,7 +67,7 @@ namespace HospitalApplication.Repositories
 			newDoctor.Id = person.Id;
 			newDoctor.Name = person.Name;
 			newDoctor.hasCar = person.hascar;
-			newDoctor.car = person.car;
+			newDoctor.parkingSlot = person.parkingSlot;
 			newDoctor.Email = person.Email;
 			newDoctor.Phone = person.Phone;
 			newDoctor.Lastnames = person.Lastnames;
@@ -79,7 +83,7 @@ namespace HospitalApplication.Repositories
 			person.Id = doctor.Id;
 			person.Name = doctor.Name;
 			person.hascar = doctor.hasCar;
-			person.car = doctor.car;
+			person.parkingSlot = doctor.parkingSlot;
 			person.Email = doctor.Email;
 			person.Phone = doctor.Phone;
 			person.Lastnames = doctor.Lastnames;

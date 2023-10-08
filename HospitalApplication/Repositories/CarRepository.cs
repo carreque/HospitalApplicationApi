@@ -20,7 +20,11 @@ namespace HospitalApplication.Repositories
 
 		public int deleteCar(int carId)
 		{
-			Car carToDelete = hotelDbContext.Cars.Where(x => x.Id == carId).Single();
+			Car carToDelete = hotelDbContext.Cars.Where(x => x.Id == carId).SingleOrDefault() ?? new Car();
+
+			if (carToDelete.Id == 0)
+				return 0;
+
 			hotelDbContext.Cars.Remove(carToDelete);
 			hotelDbContext.SaveChanges();
 			return carId;
@@ -28,13 +32,7 @@ namespace HospitalApplication.Repositories
 
 		public CarDTO getCar(int carId)
 		{
-			var carFounded = hotelDbContext.Cars.Find(carId);
-
-			if (carFounded == null) 
-			{
-				return new CarDTO();
-			}
-
+			Car carFounded = hotelDbContext.Cars.Where(x => x.Id == carId).SingleOrDefault() ?? new Car();
 			return obtainDTOFromDAO(carFounded);
 		}
 
@@ -50,9 +48,8 @@ namespace HospitalApplication.Repositories
 		{
 			Car newCar = new Car();
 			newCar.Id = carDTOObject.Id;
-			newCar.driver = carDTOObject.driver;
+			newCar.carPaymentValue = carDTOObject.carPaymentValue;
 			newCar.type = ((TipesEnum)carDTOObject.carPaymentValue).ToString();
-			newCar.licensePlate = carDTOObject.licensePlate;
 			return newCar;
 		}
 
@@ -60,9 +57,8 @@ namespace HospitalApplication.Repositories
 		{
 			CarDTO newCarDTO = new CarDTO();
 			newCarDTO.Id = carDAOObject.Id;
-			newCarDTO.carPaymentValue = (int)(Enum.Parse(typeof(TipesEnum), carDAOObject.type));
-			newCarDTO.licensePlate= carDAOObject.licensePlate;
-			newCarDTO.driver = carDAOObject.driver;
+			newCarDTO.carPaymentValue = !string.IsNullOrEmpty(carDAOObject.type) ? (int)(Enum.Parse(typeof(TipesEnum), carDAOObject.type)) : 0;
+			newCarDTO.type = carDAOObject.type;
 			return newCarDTO;
 		}
 	}

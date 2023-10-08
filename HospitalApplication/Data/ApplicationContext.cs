@@ -28,18 +28,9 @@ namespace HospitalApplication.Data
 		public DbSet<Administrator> Administrators { get; set; }
 		public DbSet<Car> Cars { get; set; }
 		public DbSet<Floor> Floors { get; set; }
-		public DbSet<Parking> Parking { get; set; }
+		public DbSet<Parking> ParkingEntries { get; set; }
 		public DbSet<Room> Rooms { get; set; }
-		public DbSet<WorkersFloorsRelated> Workers { get; set; }
+		public DbSet<WorkersFloorsRelated> WorkersFloorsRelateds { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
-			modelBuilder.Entity<Car>()
-						.HasOne(c => c.driver)
-						.WithOne(u => u.car)
-						.HasForeignKey<Car>(c => c.Id)
-						.OnDelete(DeleteBehavior.Restrict);
-
-		}
 	}
 }

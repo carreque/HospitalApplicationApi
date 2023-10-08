@@ -13,29 +13,31 @@ namespace HospitalApplication.Repositories
 		public ParkingDTO createParkingSlot(ParkingDTO parking)
 		{
 			Parking parkingToInsert = DAOFromDTO(parking);
-			hospitalDb.Parking.Add(parkingToInsert);
+			hospitalDb.ParkingEntries.Add(parkingToInsert);
 			hospitalDb.SaveChanges();
 			return parking;
 		}
 
 		public int deleteParkingSlot(int parkingSlotId)
 		{
-			Parking parkingSlotFounded = hospitalDb.Parking.Where(x => x.Id == parkingSlotId).Single();
-			hospitalDb.Parking.Remove(parkingSlotFounded);
+			Parking parkingSlotFounded = hospitalDb.ParkingEntries.Where(x => x.Id == parkingSlotId).SingleOrDefault() ?? new Parking();
+			if (parkingSlotFounded.Id == 0)
+				return 0;
+			hospitalDb.ParkingEntries.Remove(parkingSlotFounded);
 			hospitalDb.SaveChanges();
 			return parkingSlotId;
 		}
 
 		public ParkingDTO getParkingSlotById(int parkingSlotId)
 		{
-			Parking parkingSlotFounded = hospitalDb.Parking.Where(x => x.Id == parkingSlotId).Single();
+			Parking parkingSlotFounded = hospitalDb.ParkingEntries.Where(x => x.Id == parkingSlotId).SingleOrDefault() ?? new Parking();
 			return DTOFromDAO(parkingSlotFounded);
 		}
 
 		public ParkingDTO updateParkingSlot(ParkingDTO parking)
 		{
 			Parking parkingToUpdate = DAOFromDTO(parking);
-			hospitalDb.Parking.Update(parkingToUpdate);
+			hospitalDb.ParkingEntries.Update(parkingToUpdate);
 			hospitalDb.SaveChanges();
 			return parking;
 		}
@@ -47,7 +49,8 @@ namespace HospitalApplication.Repositories
 			newParking.from = parkingObject.from;
 			newParking.carId = parkingObject.carId;
 			newParking.to = parkingObject.to;
-
+			newParking.idPerson = parkingObject.idPerson;
+			newParking.licensePlate = parkingObject.licensePlate;
 			return newParking;
 		}
 
@@ -58,7 +61,8 @@ namespace HospitalApplication.Repositories
 			parkingDTOObject.from = parkingObject.from;
 			parkingDTOObject.carId = parkingObject.carId;
 			parkingDTOObject.to = parkingObject.to;
-
+			parkingDTOObject.idPerson = parkingObject.idPerson;
+			parkingDTOObject.licensePlate = parkingObject.licensePlate;
 			return parkingDTOObject;
 		}
 	}

@@ -34,7 +34,7 @@ namespace HospitalApplication.Controllers
 			FloorDTO floorFounded = floorService.getFloor(floorObjectId);
 			
 			if(floorFounded.Id == 0)
-				return StatusCode(StatusCodes.Status404NotFound, new { message = "The object was not found", response = floorFounded });
+				return StatusCode(StatusCodes.Status200OK, new { message = "Floor was not found", response = floorFounded });
 
 			return StatusCode(StatusCodes.Status200OK, new { message = "Floor obtained successfully", response = floorFounded });
 		}
@@ -51,10 +51,12 @@ namespace HospitalApplication.Controllers
 		[HttpDelete("{id}")]
 		public ActionResult deleteFloor(int floorObjectId) 
 		{
-			if(floorObjectId == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with ID Zero", response = floorObjectId });
+			int floorDeleted = floorService.deleteFloor(floorObjectId);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Floor deleted successfully", response = floorService.deleteFloor(floorObjectId) });
+			if(floorDeleted == 0)
+				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Floor was not found", response = floorDeleted });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Floor deleted successfully", response = floorDeleted });
 		}
 	}
 }

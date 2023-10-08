@@ -17,7 +17,7 @@ namespace HospitalApplication.Models.DTO
 
 		public bool hascar { get; set; }
 
-		public Car car { get; set; }
+		public int parkingSlot { get; set; }
 		public string nurse_accreditation { get; set; }
 		public string doctor_accreditation { get; set; }
 		public string admin_accreditation { get; set; }

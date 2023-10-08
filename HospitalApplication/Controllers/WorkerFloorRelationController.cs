@@ -21,10 +21,12 @@ namespace HospitalApplication.Controllers
 		[HttpGet("{id}")]
 		public ActionResult getWorkingRelation(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "There is no object with id zero", response = id });
+			WorkerFloorRelatedDTO workerFloorRelationFounded = workingFloorService.getWorkerFloorRelation(id);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Relation obtained successfully", response = workingFloorService.getWorkerFloorRelation(id) });
+			if (workerFloorRelationFounded.Id == 0)
+				return StatusCode(StatusCodes.Status200OK, new { message = "Relation was not founded", response = workerFloorRelationFounded });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Relation obtained successfully", response = workerFloorRelationFounded  });
 		}
 
 		[HttpPost]
@@ -33,7 +35,7 @@ namespace HospitalApplication.Controllers
 			if (workingDTOObject.Id != 0)
 				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id is different from zero", response = workingDTOObject });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Parking created successfully", response = workingFloorService.createWorkerFloorRelation(workingDTOObject) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Relation created successfully", response = workingFloorService.createWorkerFloorRelation(workingDTOObject) });
 		}
 
 		[HttpPut]
@@ -42,16 +44,18 @@ namespace HospitalApplication.Controllers
 			if (workingRelationToUpdate.Id == 0)
 				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = workingRelationToUpdate });
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Parking updated successfully", response = workingFloorService.updateWorkerFloorRelation(workingRelationToUpdate) });
+			return StatusCode(StatusCodes.Status200OK, new { message = "Relation updated successfully", response = workingFloorService.updateWorkerFloorRelation(workingRelationToUpdate) });
 		}
 
 		[HttpDelete("{id}")]
 		public ActionResult deleteWorkingRelation(int id)
 		{
-			if (id == 0)
-				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = id });
+			int workerRelationId = workingFloorService.deleteWorkerFloorRelation(id);
 
-			return StatusCode(StatusCodes.Status200OK, new { message = "Parking updated successfully", response = workingFloorService.deleteWorkerFloorRelation(id) });
+			if (workerRelationId == 0)
+				return StatusCode(StatusCodes.Status400BadRequest, new { message = "Id must be different from zero", response = workerRelationId });
+
+			return StatusCode(StatusCodes.Status200OK, new { message = "Relation deleted successfully", response = workerRelationId });
 		}
 	}	
 }

@@ -12,13 +12,10 @@ namespace HospitalApplication.Models
 		public int Id { get; set; }
 
 		[Required]
-		public string licensePlate { get; set; }
-
-		[Required]
 		public string type { get; set; }
 
 		[Required]
-		public Person driver { get; set; }
+		public int carPaymentValue { get; set; }
 
 	}
 }
